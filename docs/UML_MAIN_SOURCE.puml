@@ -1,0 +1,133 @@
+@startuml
+' Set this to a wide view for design review
+skinparam backgroundColor white
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+hide empty members
+
+package "Member 1: Model / Fleet / Simulation" #DBEAFE {
+ abstract class User { - id: String
+- name: String
++ getId(): String }
+ class Passenger
+ class Driver { - vehicle: Vehicle
+- location: Location
+- status: DriverStatus
++ assign()
++ release() }
+ abstract class Vehicle { - plate: String
++ getCategory(): VehicleCategory
++ getCapacity(): int }
+ class EconomyVehicle
+ class PremiumVehicle
+ class XLVehicle
+ class Location { - x: double
+- y: double
++ distanceTo(other: Location): double }
+ enum VehicleCategory { ECONOMY
+PREMIUM
+XL }
+ enum DriverStatus { AVAILABLE
+ASSIGNED
+OFFLINE }
+ class FleetManager { + getEligibleDrivers(request): List<Driver>
++ reserveDriver(id)
++ releaseDriver(id) }
+ class UserDirectory
+ class SimulationClock { + now(): int
++ tick() }
+ class JourneySimulator { + travelMinutes(from,to): int }
+ class SimulationEngine { + submitRide(...)
++ advanceMinutes(minutes)
++ cancelRide(id) }
+ User <|-- Passenger
+ User <|-- Driver
+ Vehicle <|-- EconomyVehicle
+ Vehicle <|-- PremiumVehicle
+ Vehicle <|-- XLVehicle
+ Driver "1" *-- "1" Vehicle
+ Driver --> Location
+ Driver --> DriverStatus
+ Vehicle --> VehicleCategory
+ FleetManager o-- "0..*" Driver
+ SimulationEngine --> SimulationClock
+ SimulationEngine --> JourneySimulator
+}
+package "Member 2: Booking / Console" #FBE8D4 {
+ class RideRequest { - passenger: Passenger
+- pickup: Location
+- destination: Location
+- partySize: int
+- category: VehicleCategory }
+ enum RideStatus { REQUESTED
+QUEUED
+ASSIGNED
+EN_ROUTE
+IN_PROGRESS
+COMPLETED
+CANCELLED }
+ class Ride { - status: RideStatus
+- driver: Driver
+- quotedFare: double
++ assign(driver, fare, now)
++ startTrip(now)
++ complete(now)
++ cancel() }
+ class RideService { + requestRide(...)
++ assignDriver(...)
++ startRide(...)
++ completeRide(...) }
+ class ConsoleMenu { + start() }
+ RideRequest --> Passenger
+ RideRequest --> Location
+ RideRequest --> VehicleCategory
+ Ride *-- RideRequest
+ Ride --> RideStatus
+ Ride --> Driver
+ RideService o-- "0..*" Ride
+}
+package "Member 3: Dispatch" #E0F3E3 {
+ interface MatchingStrategy { + chooseDriver(request, eligible): Optional<Driver> }
+ class NearestDriverStrategy
+ class BalancedMatchingStrategy
+ class DispatchService { + dispatchRide(rideId, minute)
++ retryWaitingQueue(minute) }
+ class WaitingQueue
+ MatchingStrategy <|.. NearestDriverStrategy
+ MatchingStrategy <|.. BalancedMatchingStrategy
+ DispatchService --> MatchingStrategy
+ DispatchService *-- WaitingQueue
+}
+package "Member 4: Pricing / Payments / Analytics" #EAE7FA {
+ interface PricingStrategy { + quote(request,eligibleCount): double }
+ class StandardPricing
+ class SurgePricing
+ class PricingService { + quote(request,eligibleCount): double }
+ interface PaymentMethod { + charge(amount): PaymentResult }
+ class CardPayment
+ class CashPayment
+ class WalletPayment
+ class PaymentService { + processPayment(ride,method,minute) }
+ class Transaction
+ class AnalyticsService { + summary(rides,drivers,transactions): String }
+ PricingStrategy <|.. StandardPricing
+ PricingStrategy <|.. SurgePricing
+ PricingService --> PricingStrategy
+ PaymentMethod <|.. CardPayment
+ PaymentMethod <|.. CashPayment
+ PaymentMethod <|.. WalletPayment
+ PaymentService --> PaymentMethod
+ PaymentService o-- "0..*" Transaction
+}
+class AppContext { + withDemoData() }
+ConsoleMenu --> AppContext
+AppContext --> SimulationEngine
+SimulationEngine --> RideService
+SimulationEngine --> FleetManager
+SimulationEngine --> DispatchService
+SimulationEngine --> PaymentService
+DispatchService --> FleetManager
+DispatchService --> RideService
+DispatchService --> PricingService
+AnalyticsService ..> Ride
+@enduml
