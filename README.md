@@ -1,62 +1,47 @@
-# RideFlow — Java Console Ride-Hailing Simulator
+# RideFlow — Team Starter
 
-**Java 21 • Apache NetBeans compatible • Git-friendly • No Maven • No external dependencies**
+**Java 21 · Apache NetBeans / Ant · Console Application · 4 members**
 
-## What is included?
-- A **working starter skeleton**, not a completed project: one ride can be requested, matched, simulated to completion and paid (simulated cash).
-- Core classes and stable service interfaces for all four team members.
-- A basic second matching strategy, queue, cancellation, console and starter analytics.
-- Ant build for repeatable compilation in NetBeans or another IDE.
-- Dependency-free smoke tests. These are **not** a comprehensive test suite.
-- UML diagrams and source files under `docs/`.
+RideFlow is a proposed ride-hailing management and simulation project. The repository is **only a team starter**, not a working booking system. It includes a runnable entry point and four empty placeholder modules with task descriptions. No ride booking, dispatch, simulation, pricing, or payment logic has been implemented.
 
-**Important:** This is a classroom simulation. It does **not** offer GPS, real driver movement, live payments, real-world routing, simultaneous threads or persistence. See `docs/FEATURE_BACKLOG.md` for what remains to build.
+## How to open and run
 
-## Getting started: Apache NetBeans
-1. Install **JDK 21** (or newer with Java 21 support) and Apache NetBeans.
-2. Extract this ZIP. Select **File > Open Project**, choose the **RideFlow** folder (the folder containing `build.xml` and `nbproject`).
-3. This is a **NetBeans Java Free-Form Ant** project (not Maven). If your NetBeans edition does not recognize it, choose **File > New Project > Java with Ant > Java Project with Existing Sources**, select the `src` and `test` folders, set main class `rideflow.app.Main` and Java 21.
-4. Run with **Run Project** or right-click `build.xml` to run the `run` Ant target.
-5. Use `P001`, `P002` or `P003` for demo passengers. Available categories: ECONOMY, PREMIUM and XL.
+1. Open this `RideFlow` directory as a project in Apache NetBeans (**File → Open Project**).
+2. Use JDK 21 for the project.
+3. Run the project (F6). The console should print a welcome message and say modules are not yet implemented.
+4. You may also run `ant run` from this directory if Ant and JDK 21 are installed.
 
-From a terminal with **JDK 21 and Ant**:
+## Member responsibilities
 
-```bash
-ant clean compile
-ant test
-ant run
-ant jar
-java -jar dist/RideFlow.jar
-```
+| Member | Starting Java file | Owns |
+|---|---|---|
+| 1 | `fleet/FleetModule.java` | Users, vehicles, fleet, coordinates, simulated time, vehicle movement |
+| 2 | `booking/BookingModule.java` | Ride requests and statuses, cancellations, histories, console UI |
+| 3 | `dispatch/DispatchModule.java` | Matching algorithms, driver assignment, waiting queue, comparison |
+| 4 | `finance/FinanceModule.java` | Pricing, simulated payments, transactions, analytics |
 
-## First hands-on demo
-Request Economy for passenger `P001` from `(0,0)` to `(4,0)` for 2 passengers. The nearest driver `D001` should be assigned. Advance the virtual clock by 6 minutes, then inspect completed rides and the report.
+Each file contains only a comment describing that member's job. Members **should design and add their own classes**, and can delete/rename the placeholder once their code is organized.
 
-## Repo contents
+## One proposed UML class diagram
 
-```text
-RideFlow/
-├─ build.xml                  # Shared Ant build, not Maven
-├─ nbproject/project.xml      # NetBeans project metadata
-├─ src/rideflow/
-│  ├─ model/                  # Shared model: users, locations, vehicles
-│  ├─ fleet/                  # Member 1
-│  ├─ simulation/             # Member 1 (coordinate with Member 3)
-│  ├─ booking/                # Member 2
-│  ├─ app/                    # Member 2 + shared composition
-│  ├─ dispatch/               # Member 3
-│  ├─ finance/                # Member 4
-│  └─ analytics/              # Member 4
-├─ test/rideflow/tests/       # No dependency on JUnit yet
-└─ docs/                      # UML, team contracts, backlog and Git guide
-```
+See **`docs/UML_MAIN.svg`**. The editable source is **`docs/UML_MAIN_SOURCE.puml`**. These describe a **possible future architecture**, not the five classes currently implemented. The group should review and revise the proposed classes, relationships and methods together. Neither the UML nor its suggested names are compulsory.
 
-## Rules for teammates
-1. **Agree on service method signatures** in `docs/INTERFACES.md` before changing shared classes.
-2. Work on your own Git branch and submit pull requests; do not commit directly to `main`.
-3. Do **not** rename packages or change public methods without telling other members.
-4. Run `ant test` before opening a pull request.
-5. Avoid merging IDE-specific settings and generated `build/`, `dist/` directories.
-6. Tests should demonstrate invalid capacity, double assignment, queue/cancellation, fare and payment correctness.
+## Agree on interfaces first
 
-Start with **`docs/TEAM_HANDOFF.md`**, **`docs/UML_DOMAIN.svg`** and **`docs/UML_SERVICES.svg`**.
+Before coding independently, discuss how these interactions will work:
+
+- Booking passes a ride request to Dispatch.
+- Dispatch obtains driver availability/capacity from Fleet and reserves a driver.
+- Fleet/Simulation tells Booking when pickup and completion occur.
+- Booking triggers Finance to quote/process completed rides.
+- Analytics gathers data from the other modules.
+
+Agree on your basic models (e.g., `RideRequest`, `Driver`, `Location`), method signatures and data types before implementing interconnected services. Review the four-way task division if the workload becomes uneven.
+
+## Git workflow
+
+Create one feature branch per member (for example, `feature/fleet-simulation`, `feature/ride-booking`, `feature/dispatch`, and `feature/finance-analytics`). Commit working changes and merge them by pull request after compiling and reviewing interfaces. Keep the shared `main` branch buildable.
+
+## Scope reminder
+
+The goal is an intelligent console simulation, not real GPS, a graphical application, or real payment processing. Useful milestones are: (1) one end-to-end ride, (2) multiple drivers and concurrent requests, (3) waiting queue and simulated trips, and (4) fares, reports and algorithm comparison.

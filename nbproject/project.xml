@@ -6,28 +6,30 @@
             <name>RideFlow</name>
             <properties>
                 <property name="src.dir">src</property>
-                <property name="test.dir">test</property>
             </properties>
             <folders>
-                <source-folder><label>Source Packages</label><type>java</type><location>src</location></source-folder>
-                <source-folder><label>Test Packages</label><type>java</type><location>test</location></source-folder>
+                <source-folder>
+                    <label>Source Packages</label>
+                    <type>java</type>
+                    <location>src</location>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="build"><target>compile</target></action>
                 <action name="rebuild"><target>clean</target><target>compile</target></action>
                 <action name="clean"><target>clean</target></action>
                 <action name="run"><target>run</target></action>
-                <action name="test"><target>test</target></action>
             </ide-actions>
             <view>
                 <items>
                     <source-folder style="packages"><label>Source Packages</label><location>src</location></source-folder>
-                    <source-folder style="packages"><label>Test Packages</label><location>test</location></source-folder>
                     <source-file><location>build.xml</location></source-file>
                 </items>
                 <context-menu>
-                    <ide-action name="build"/><ide-action name="rebuild"/><ide-action name="clean"/>
-                    <ide-action name="run"/><ide-action name="test"/>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="run"/>
                 </context-menu>
             </view>
         </general-data>
@@ -35,13 +37,6 @@
             <compilation-unit>
                 <package-root>src</package-root>
                 <built-to>build/classes</built-to>
-            
-            </compilation-unit>
-            <compilation-unit>
-                <package-root>test</package-root>
-                <classpath mode="compile">build/classes</classpath>
-                <built-to>build/test-classes</built-to>
-               
             </compilation-unit>
         </java-data>
     </configuration>

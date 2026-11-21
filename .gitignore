@@ -1,15 +1,10 @@
-# Compiled code and generated artifacts
 /build/
 /dist/
 *.class
-*.jar
-# NetBeans machine-specific settings (share nbproject/project.xml)
 /nbproject/private/
-# IntelliJ / VS Code personal settings
 /.idea/
 *.iml
 /.vscode/
-# OS/editor clutter
 .DS_Store
 Thumbs.db
 *.swp
