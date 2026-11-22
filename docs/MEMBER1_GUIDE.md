@@ -92,20 +92,6 @@ All methods below are unimplemented. Each method has its own TODO describing the
 
 These files are integration contracts, not completed work. Preserve existing parameter and return types when implementing them, or coordinate any necessary signature changes with the group.
 
-## Tests, build and documentation
-
-| File | Purpose |
-|---|---|
-| `test/rideflow/tests/FleetModelTest.java` | Ten runnable checks for Member 1's independent models, fleet, clock and travel-duration calculations. |
-| `test/rideflow/tests/Member1Test.java` | Original 25 integration scenarios, retained unchanged for after the other members implement their classes. Deferred in this version. |
-| `build.xml` | Compile defaults and independent tests; run/demo targets are retained for later integration. |
-| `nbproject/project.xml` | Existing NetBeans freeform source-root configuration. |
-| `run.bat` / `run.sh` | Compile by default; test runs independent checks; integration attempts the deferred scenarios. |
-| `README.md` | Stub conventions, replacement and compile instructions. |
-| `docs/INTEGRATION_CONTRACTS.md` | Proposed signatures and responsibility boundaries. |
-| `docs/VERIFICATION.md` | Actual checks and limitations for this version. |
-| `docs/UML_MAIN.svg` / `docs/UML_MAIN_SOURCE.puml` | Unchanged master diagram and editable source. Older optional-design comments predate the final proposal. |
-
 ## Suggested reading order
 
 Read User, Passenger, Vehicle and subclasses, Location, Driver, UserDirectory, FleetManager, SimulationClock, JourneySimulator, and finally SimulationEngine. Read the enums when encountered. User/Vehicle show inheritance and polymorphism; private state and guarded operations show encapsulation; SimulationEngine shows collaboration across the four members' services once their methods are implemented.
